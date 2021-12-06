@@ -9,13 +9,11 @@ def _config() -> list:
     return instructions
 
 
-def do_stuff(data):
+def part_one(data):
     gamma = ''
     epsilon = ''
     loop = 0
     finish = len(data[0][2:])
-    oxygen = {n: [] for n in range(finish)}  # common and 1
-    co2 = {n: [] for n in range(finish)}  # uncommon and 0
 
     while loop != finish:
         current_bin = []
@@ -25,26 +23,49 @@ def do_stuff(data):
         gamma += mode(current_bin)
         epsilon += Counter(current_bin).most_common()[-1][0]
 
-        compare = Counter(current_bin)
-        oxygen_value = '0' if compare['0'] >= compare['1'] else '1'
-        co2_value = '0' if compare['0'] <= compare['1'] else '1'
-        # for i in data:
-        #     if i[2:].startswith(oxygen_value):
-        #         if oxygen[loop]:
-        #             if len(oxygen[loop]) != finish:
-        #                 oxygen[loop] = i
-        #         else:
-        #             oxygen[loop] = i
-        #     elif len(co2[loop]) != finish:
-        #         co2[loop] = i
-        oxygen[loop] = [i for i in data if i[2:].startswith(oxygen_value) and len(oxygen[loop]) != finish]
-        co2[loop] = [i for i in data if i[2:].startswith(co2_value) and len(oxygen[loop]) != finish]
-
         loop += 1
 
-    print(oxygen, '\n', co2)
+    return int(gamma, 2) * int(epsilon, 2)
 
-    return int(gamma, 2) * int(epsilon, 2), True
+
+def most_least_common(list_: list, start: int, gas_name: str) -> str:
+    count = Counter([i[2:][start] for i in list_])
+    oxygen = '1' if count['1'] >= count['0'] else '0'
+    co2 = '1' if count['1'] <= count['0'] else '0'
+
+    return oxygen if gas_name == 'oxygen' else co2
+
+
+def part_two(data: list):
+    start = 0
+    oxygen = {'name': 'oxygen', 'value': []}  # common and 1
+    co2 = {'name': 'co2', 'value': []}  # uncommon and 0
+
+    for gas in [oxygen, co2]:
+        new_gas = {'name': gas['name'], 'value': data[:]}
+        while len(gas) != 1:
+            gas = {'name': gas['name'], 'value': []}
+            bit = most_least_common(new_gas['value'], start, gas['name'])
+            for binary in new_gas['value']:
+                if binary[2:][start].startswith(bit):
+                    gas['value'].append(binary)
+            new_gas = gas.copy()
+            if len(new_gas['value']) == 1:
+                oxygen['value'].append(new_gas['value'][0]) if new_gas['name'] == 'oxygen' \
+                    else co2['value'].append(new_gas['value'][0])
+            start += 1
+
+    print(co2, '\n', oxygen)
+    # while len(co2) != 1:
+    #     co2 = []
+    #     bit = least_common(new_gas, start)
+    #     for binary in new_gas:
+    #         if binary[2:][start].startswith(bit):
+    #             co2.append(binary)
+    #     new_gas = co2[:]
+    #     start += 1
+    #
+    # return True
 
 
 def main():
@@ -54,7 +75,8 @@ def main():
     ]
 
     # data = _config()
-    result_one, result_two = do_stuff(data)
+    result_one = part_one(data)
+    result_two = part_two(data)
     print(f'Part one: {result_one}')
     print(f'Part two: {result_two}')
 
