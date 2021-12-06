@@ -37,35 +37,32 @@ def most_least_common(list_: list, start: int, gas_name: str) -> str:
 
 
 def part_two(data: list):
-    start = 0
     oxygen = {'name': 'oxygen', 'value': []}  # common and 1
     co2 = {'name': 'co2', 'value': []}  # uncommon and 0
 
     for gas in [oxygen, co2]:
+        start = 0
         new_gas = {'name': gas['name'], 'value': data[:]}
-        while len(gas) != 1:
+
+        while len(gas['value']) != 1:
             gas = {'name': gas['name'], 'value': []}
             bit = most_least_common(new_gas['value'], start, gas['name'])
+
             for binary in new_gas['value']:
                 if binary[2:][start].startswith(bit):
                     gas['value'].append(binary)
+
             new_gas = gas.copy()
+            start += 1
+
             if len(new_gas['value']) == 1:
                 oxygen['value'].append(new_gas['value'][0]) if new_gas['name'] == 'oxygen' \
                     else co2['value'].append(new_gas['value'][0])
-            start += 1
+                new_gas['value'] = data[:]
+                start = 0
 
-    print(co2, '\n', oxygen)
-    # while len(co2) != 1:
-    #     co2 = []
-    #     bit = least_common(new_gas, start)
-    #     for binary in new_gas:
-    #         if binary[2:][start].startswith(bit):
-    #             co2.append(binary)
-    #     new_gas = co2[:]
-    #     start += 1
-    #
-    # return True
+    print(oxygen, co2)
+    return int(oxygen['value'][0][2:], 2) * int(co2['value'][0][2:], 2)
 
 
 def main():
