@@ -31,7 +31,7 @@ def part_one(data):
 def most_least_common(list_: list, start: int, gas_name: str) -> str:
     count = Counter([i[2:][start] for i in list_])
     oxygen = '1' if count['1'] >= count['0'] else '0'
-    co2 = '1' if count['1'] <= count['0'] else '0'
+    co2 = '1' if count['1'] < count['0'] else '0'
 
     return oxygen if gas_name == 'oxygen' else co2
 
@@ -43,8 +43,9 @@ def part_two(data: list):
     for gas in [oxygen, co2]:
         start = 0
         new_gas = {'name': gas['name'], 'value': data[:]}
+        stop = False
 
-        while len(gas['value']) != 1:
+        while not stop:
             gas = {'name': gas['name'], 'value': []}
             bit = most_least_common(new_gas['value'], start, gas['name'])
 
@@ -60,18 +61,19 @@ def part_two(data: list):
                     else co2['value'].append(new_gas['value'][0])
                 new_gas['value'] = data[:]
                 start = 0
+                stop = True
 
     print(oxygen, co2)
     return int(oxygen['value'][0][2:], 2) * int(co2['value'][0][2:], 2)
 
 
 def main():
-    data = [
-        '0o00100', '0o11110', '0o10110', '0o10111', '0o10101', '0o01111', '0o00111', '0o11100', '0o10000', '0o11001',
-        '0o00010', '0o01010'
-    ]
+    # data = [
+    #     '0o00100', '0o11110', '0o10110', '0o10111', '0o10101', '0o01111', '0o00111', '0o11100', '0o10000', '0o11001',
+    #     '0o00010', '0o01010'
+    # ]
 
-    # data = _config()
+    data = _config()
     result_one = part_one(data)
     result_two = part_two(data)
     print(f'Part one: {result_one}')
