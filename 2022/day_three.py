@@ -10,7 +10,7 @@ sample_data = [
 ]
 
 
-def solve(data) -> int:
+def part_one(data) -> int:
     counting = dict()
     alphabet = list(string.ascii_lowercase) + list(string.ascii_uppercase)
 
@@ -28,14 +28,30 @@ def solve(data) -> int:
     return sum(counting.values())
 
 
+def part_two(data):
+    groups = list(range(len(data) // 3))
+    alphabet = list(string.ascii_lowercase) + list(string.ascii_uppercase)
+    counting = list()
+
+    for _ in groups:
+        temp_list = data[:3]
+        del data[:3]
+        for i in temp_list[0]:
+            if i in temp_list[1] and i in temp_list[2]:
+                counting.append(alphabet.index(i) + 1)
+                break
+
+    return sum(counting)
+
+
 def main():
     with open('day_three.txt', 'r') as f:
         data = f.read().splitlines()
-    part_1 = solve(data)
-    # part_1, part_2 = solve(data)
+    part_1 = part_one(data)
+    part_2 = part_two(data)
 
     print(f'Part One: {part_1}')
-    # print(f'Part Two: {part_2}')
+    print(f'Part Two: {part_2}')
 
 
 if __name__ == '__main__':
