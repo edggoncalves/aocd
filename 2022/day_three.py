@@ -1,13 +1,13 @@
 import string
 
-sample_data = [
-    'vJrwpWtwJgWrhcsFMMfFFhFp',
-    'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL',
-    'PmmdzqPrVvPwwTWBwg',
-    'wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn',
-    'ttgJtRGJQctTZtZT',
-    'CrZsJsPPZsGzwwsLwLmpwMDw'
-]
+# sample_data = [
+#     'vJrwpWtwJgWrhcsFMMfFFhFp',
+#     'jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL',
+#     'PmmdzqPrVvPwwTWBwg',
+#     'wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn',
+#     'ttgJtRGJQctTZtZT',
+#     'CrZsJsPPZsGzwwsLwLmpwMDw'
+# ]
 
 
 def part_one(data) -> int:
@@ -28,7 +28,7 @@ def part_one(data) -> int:
     return sum(counting.values())
 
 
-def part_two(data):
+def part_two(data) -> int:
     groups = list(range(len(data) // 3))
     alphabet = list(string.ascii_lowercase) + list(string.ascii_uppercase)
     counting = list()
