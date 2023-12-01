@@ -64,7 +64,6 @@ def test(data: list[str]):
     """find unique 14 letter sequence in string"""
     
 
-
 if __name__ == "__main__":
     data = get_data()
     part_one(data)
