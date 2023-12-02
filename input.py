@@ -13,4 +13,8 @@ def config(day, year):
     return data
 
 
-print(config(2, 2021))
+def get_data(input_data: str, year: str, day: str) -> list[str]:
+    base_path = path.dirname(__file__)
+    with open(f"{path.join(base_path, year, day, input_data)}.txt", "r") as f:
+        output_data = f.read().splitlines()
+    return output_data
